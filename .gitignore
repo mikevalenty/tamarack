@@ -1,0 +1,10 @@
+
+/_ReSharper.Tamarack
+/Src/obj
+/Src/bin
+/Example/obj
+/Example/bin
+/Test/obj
+/Test/bin
+*.suo
+*.user
