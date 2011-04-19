@@ -14,20 +14,12 @@ namespace Tamarack.Example.Pipeline.LoginService.Filters
 
 		public bool Execute(LoginContext context, Func<LoginContext, bool> executeNext)
 		{
-			if (IsValid(context))
-				return true;
-
-			return executeNext(context);
-		}
-
-		private bool IsValid(LoginContext context)
-		{
 			var user = repository.FindByUsername(context.Username);
 
-			if (user == null)
-				return false;
-
-			return user.IsValid(context.Password);
+			if (user != null)
+				return user.IsValid(context.Password);
+			
+			return executeNext(context);
 		}
 	}
 

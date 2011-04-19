@@ -3,24 +3,23 @@ Tamarack is micro framework for implementing the Chain of Responsibility pattern
 
 Why should I care?
 ------------------
-The Chain of Responsibility is a key building block of extensible software. The Gang of Four describe
-it as
+The Chain of Responsibility is a key building block of extensible software.
 
 >Avoid coupling the sender of a request to its receiver by giving more than one object a 
 >chance to handle the request. Chain the receiving objects and pass the request along the 
->chain until an object handles it.
+>chain until an object handles it. -- Gang of Four
 
-Variations of this pattern are the basis for Servlet Filters, IIS modules and handlers and several open source 
+Variations of this pattern are the basis for Servlet Filters, IIS Modules and Handlers and several open source 
 projects that I've used including Sync4J, JAMES, Log4Net and Unity. It's an essential tool in OO toolbox and it's key in transforming rigid procedural code into a composable Domain Specific Language.
 
 Why do need a micro framework?
 ------------------
 You don't. However after using variations of this pattern over and over again in enterprise applications, I settled 
-into mildly a opinionated implementation that has helped me usher code into the pit of success in a team environment. 
+into mildly a opinionated implementation that has helped me usher complex code into the pit of success in a team environment. 
 
-Show me examples
+Show me examples!
 -----------
-Consider a block of code to submit a comment from a rich text editor. There are
+Consider a block of code to process a blog comment coming from a web-based rich text editor. There are
 probably several things you'll want to do before letting the text into your database. 
     
 	public class BlogEngine
@@ -43,7 +42,7 @@ probably several things you'll want to do before letting the text into your data
 		}
 	}
 
-How about user login? There all kinds of things you might be doing there:
+How about user login? There are all kinds of things you might need to do there:
 
 	public class LoginService
 	{
@@ -78,4 +77,74 @@ Calculating a spam score in a random block of text:
 
 			return pipeline.Execute(text);
 		}
+	}
+
+How do I use it?
+-----------
+
+It's pretty simple, there is just one interface to implement and it looks like this:
+
+	public interface IFilter<T, TOut>
+	{
+		TOut Execute(T context, Func<T, TOut> executeNext);
+	}
+
+Basically, you get an input to operate on and you return a value. The executeNext delegate 
+is the next filter in the chain using it in this fashion allows you several options:
+
+ * Modify the input before the next filter gets it
+ * Modify the output of the next filter before returning
+ * Short circuit out of the chain by not calling the executeNext delegate
+
+I learn by example, so let's look at this interface in action. In the spam score calculator 
+example, each filter looks for markers in the text and adds to the overall spam score by
+modifying the _result_ of the next filter before returning.
+
+	public class PerspcriptionDrugFilter : IFilter<string, double>
+	{
+		public double Execute(string text, Func<string, double> executeNext)
+		{
+			var score = executeNext(text);
+
+			if (text.Contains("viagra"))
+				score += .25;
+
+			return score;
+		}
+	}
+	
+In this login example, we're look for the user in our local user store and if it exists 
+we'll short-circuit the chain and authenticate the request. Otherwise we'll let the request 
+continue to the next filter which looks for the user in an Ldap respository.
+
+	public class AuthenticateAgainstLocalStore : IFilter<LoginContext, bool>
+	{
+		...
+		
+		public bool Execute(LoginContext context, Func<LoginContext, bool> executeNext)
+		{
+			var user = repository.FindByUsername(context.Username);
+
+			if (user != null)
+				return user.IsValid(context.Password); // short circuit
+			
+			return executeNext(context);
+		}
+	}
+
+	
+How does it work?
+-----------
+
+The flux capacitor if you will, is a small block of code in the Pipeline class:
+
+	public TOut Execute(T input)
+	{
+		GuardAgainstNullTailFunc();
+
+		GetNext = () => current < filters.Count
+				? x => filters[current++].Execute(x, GetNext())
+				: tail;
+
+		return GetNext().Invoke(input);
 	}
