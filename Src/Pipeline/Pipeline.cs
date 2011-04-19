@@ -12,8 +12,7 @@ namespace Tamarack.Pipeline
 
 		public Pipeline()
 			: this(new ActivatorServiceProvider())
-		{
-		}
+		{ }
 
 		public Pipeline(IServiceProvider serviceProvider)
 		{
