@@ -12,11 +12,6 @@ The Chain of Responsibility is a key building block of extensible software.
 Variations of this pattern are the basis for Servlet Filters, IIS Modules and Handlers and several open source 
 projects that I've used including Sync4J, JAMES, Log4Net and Unity. It's an essential tool in OO toolbox and it's key in transforming rigid procedural code into a composable Domain Specific Language.
 
-Why do need a micro framework?
-------------------
-You don't. However after using variations of this pattern over and over again in enterprise applications, I settled 
-into mildly a opinionated implementation that has helped me usher complex code into the pit of success in a team environment. 
-
 Show me examples!
 -----------
 Consider a block of code to process a blog comment coming from a web-based rich text editor. There are
@@ -79,7 +74,7 @@ Calculating a spam score in a random block of text:
 		}
 	}
 
-How do I use it?
+How does it work?
 -----------
 
 It's pretty simple, there is just one interface to implement and it looks like this:
@@ -130,21 +125,4 @@ continue to the next filter which looks for the user in an Ldap respository.
 			
 			return executeNext(context);
 		}
-	}
-
-	
-How does it work?
------------
-
-The flux capacitor if you will, is a small block of code in the Pipeline class:
-
-	public TOut Execute(T input)
-	{
-		GuardAgainstNullTailFunc();
-
-		GetNext = () => current < filters.Count
-				? x => filters[current++].Execute(x, GetNext())
-				: tail;
-
-		return GetNext().Invoke(input);
 	}
