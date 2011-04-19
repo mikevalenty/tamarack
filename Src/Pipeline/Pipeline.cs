@@ -38,6 +38,10 @@ namespace Tamarack.Pipeline
 			return this;
 		}
 
+		public void Master()
+		{
+		}
+
 		public TOut Execute(T input)
 		{
 			GuardAgainstNullTailFunc();
