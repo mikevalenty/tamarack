@@ -1,4 +1,4 @@
-Tamarack is micro framework for implementing the Chain of Responsibility pattern in .NET
+Tamarack is a micro framework for implementing the Chain of Responsibility pattern in .NET
 =================================================================================================
 
 The Chain of Responsibility is a key building block of extensible software.
@@ -7,8 +7,7 @@ The Chain of Responsibility is a key building block of extensible software.
 >chance to handle the request. Chain the receiving objects and pass the request along the 
 >chain until an object handles it. -- Gang of Four
 
-Variations of this pattern are the basis for Servlet Filters, IIS Modules and Handlers and several open source 
-projects that I've used including Sync4J, JAMES, Log4Net and Unity. It's an essential tool in OO toolbox and it's key in transforming rigid procedural code into a composable Domain Specific Language.
+Variations of this pattern are the basis for Servlet Filters, IIS Modules and Handlers and several open source projects including Sync4J, JAMES, Log4Net and Unity. It's an essential tool in OO toolbox and key in transforming rigid procedural code into a composable Domain Specific Language.
 
 Show me examples!
 -----------
