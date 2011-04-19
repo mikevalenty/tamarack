@@ -1,8 +1,6 @@
 Tamarack is micro framework for implementing the Chain of Responsibility pattern in .NET
 =================================================================================================
 
-Why should I care?
-------------------
 The Chain of Responsibility is a key building block of extensible software.
 
 >Avoid coupling the sender of a request to its receiver by giving more than one object a 
