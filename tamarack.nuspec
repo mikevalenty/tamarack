@@ -6,6 +6,8 @@
 		<authors>Michael Valenty</authors>
 		<description>A micro framework for implementing the Chain of Responsibility pattern in .NET</description>
 		<summary>Variations of this pattern are the basis for Servlet Filters, IIS Modules and Handlers and several open source projects including Sync4J, JAMES, Log4Net and Unity. It's an essential tool in OO toolbox and key in transforming rigid procedural code into a composable Domain Specific Language.</summary>
+		<tags>tamarack pipeline</tags>
+		<copyright>2011 Michael Valenty</copyright>
 		<language>en-US</language>
 		<licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
 		<projectUrl>https://github.com/mikevalenty/tamarack</projectUrl>
