@@ -18,7 +18,7 @@ namespace Tamarack.Example.Pipeline.LoginService.Filters
 
 			if (user != null)
 				return user.IsValid(context.Password);
-			
+
 			return executeNext(context);
 		}
 	}

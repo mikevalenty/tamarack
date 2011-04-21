@@ -23,11 +23,11 @@ namespace Tamarack.Example.Pipeline.BlogEngine
 				.Add<RemoveJavascript>()
 				.Add<RewriteProfanity>()
 				.Add<GuardAgainstDoublePost>()
-				.Finally(b => repository.Save(b));
+				.Finally(p => repository.Save(p));
 
-			var blogId = pipeline.Execute(post);
+			var newId = pipeline.Execute(post);
 
-			return blogId;
+			return newId;
 		}
 	}
 }
