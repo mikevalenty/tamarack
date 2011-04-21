@@ -70,6 +70,17 @@ Calculating a spam score in a random block of text:
 			return pipeline.Execute(text);
 		}
 	}
+	
+Prefer convention over configuration? Try this instead:
+
+	public double CalculateSpamScore(string text)
+	{
+		var pipeline = new Pipeline<string, double>()
+			.AddFiltersIn("Tamarack.Example.Pipeline.SpamScorer.Filters")
+			.Finally(score => 0);
+
+		return pipeline.Execute(text);
+	}
 
 How does it work?
 -----------
