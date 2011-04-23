@@ -3,16 +3,6 @@ using System.Collections.Generic;
 
 namespace Tamarack.Pipeline
 {
-	public static class PipelineExtension
-	{
-		public static Pipeline<T, TOut> Add<T, TOut, TFilter>(this Pipeline<T, TOut> pipeline)
-			where TFilter : IFilter<T, TOut>
-		{
-			pipeline.Add(typeof(TFilter));
-			return pipeline;
-		}
-	}
-
 	public class Pipeline<T, TOut>
 	{
 		private readonly IServiceProvider serviceProvider;
