@@ -17,12 +17,12 @@ namespace Tamarack.Example.Pipeline.BlogEngine
 
 		public int Submit(Post post)
 		{
-			var pipeline = new Pipeline<Post, int>(serviceProvider)
-				.Add<CanoncalizeHtml>()
-				.Add<StripMaliciousTags>()
-				.Add<RemoveJavascript>()
-				.Add<RewriteProfanity>()
-				.Add<GuardAgainstDoublePost>()
+			var pipeline = new Pipeline<Post, int>()
+				.Add(new CanoncalizeHtml())
+				.Add(new StripMaliciousTags())
+				.Add(new RemoveJavascript())
+				.Add(new RewriteProfanity())
+				.Add(new GuardAgainstDoublePost())
 				.Finally(p => repository.Save(p));
 
 			var newId = pipeline.Execute(post);
