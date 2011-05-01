@@ -10,10 +10,10 @@ namespace Tamarack.Test.Pipeline
 		[Test]
 		public void Filter_can_modify_input()
 		{
-			var pipeline = new Pipeline<int, string>();			
+			var pipeline = new Pipeline<int, string>();
 			pipeline.Add(new AddToInput(3));
 			pipeline.Finally(x => x + "!");
-			
+
 			var output = pipeline.Execute(2);
 
 			Assert.That(output, Is.EqualTo("5!"));

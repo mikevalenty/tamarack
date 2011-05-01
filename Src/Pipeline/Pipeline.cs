@@ -7,7 +7,6 @@ namespace Tamarack.Pipeline
 	{
 		private readonly IServiceProvider serviceProvider;
 		private readonly IList<IFilter<T, TOut>> filters;
-		private Func<T, TOut> tail;
 		private int current;
 
 		public Pipeline()
@@ -18,7 +17,6 @@ namespace Tamarack.Pipeline
 		{
 			this.serviceProvider = serviceProvider;
 			filters = new List<IFilter<T, TOut>>();
-			tail = new Func<T, TOut>(c => { throw new EndOfChainException(); });
 		}
 
 		public int Count
@@ -44,17 +42,11 @@ namespace Tamarack.Pipeline
 			return this;
 		}
 
-		public Pipeline<T, TOut> Finally(Func<T, TOut> func)
-		{
-			tail = func;
-			return this;
-		}
-
 		public TOut Execute(T input)
 		{
 			GetNext = () => current < filters.Count
-					? x => filters[current++].Execute(x, GetNext())
-					: tail;
+				? x => filters[current++].Execute(x, GetNext())
+				: new Func<T, TOut>(c => { throw new EndOfChainException(); });
 
 			return GetNext().Invoke(input);
 		}

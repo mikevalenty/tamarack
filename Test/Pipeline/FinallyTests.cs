@@ -26,7 +26,7 @@ namespace Tamarack.Test.Pipeline
 		}
 
 		[Test]
-		public void Should_throw_exception_when_chain_goes_too_far_without_finally()
+		public void Should_throw_exception_when_chain_goes_too_far()
 		{
 			var pipeline = new Pipeline<int, string>();
 			pipeline.Add(new AddToInput(3));
