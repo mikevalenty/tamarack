@@ -1,16 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamarack", "Src\Tamarack.csproj", "{9E347777-C32A-4019-A336-BBC0344829BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamarack", "src\Tamarack.csproj", "{9E347777-C32A-4019-A336-BBC0344829BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamarack.Test", "Test\Tamarack.Test.csproj", "{E68A1D10-CC05-4D9C-9AFF-0384E3F10A70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamarack.Test", "test\Tamarack.Test.csproj", "{E68A1D10-CC05-4D9C-9AFF-0384E3F10A70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamarack.Example", "Example\Tamarack.Example.csproj", "{45D22056-BCB8-48E7-8937-5DAD90C1990F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C52EA7A-47DC-48D9-BC05-244FE86A8CA7}"
-	ProjectSection(SolutionItems) = preProject
-		tamarack.nuspec = tamarack.nuspec
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tamarack.Example", "example\Tamarack.Example.csproj", "{45D22056-BCB8-48E7-8937-5DAD90C1990F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
