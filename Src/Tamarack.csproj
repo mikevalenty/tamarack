@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivatorServiceProvider.cs" />
+    <Compile Include="Pipeline\EndOfChainException.cs" />
     <Compile Include="Pipeline\IFilter.cs" />
     <Compile Include="Pipeline\Pipeline.cs" />
     <Compile Include="Pipeline\Extensions\AssemblyExtensions.cs" />

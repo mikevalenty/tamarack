@@ -18,6 +18,7 @@ namespace Tamarack.Pipeline
 		{
 			this.serviceProvider = serviceProvider;
 			filters = new List<IFilter<T, TOut>>();
+			tail = new Func<T, TOut>(c => { throw new EndOfChainException(); });
 		}
 
 		public int Count
@@ -51,19 +52,11 @@ namespace Tamarack.Pipeline
 
 		public TOut Execute(T input)
 		{
-			GuardAgainstNullTailFunc();
-
 			GetNext = () => current < filters.Count
 					? x => filters[current++].Execute(x, GetNext())
 					: tail;
 
 			return GetNext().Invoke(input);
-		}
-
-		private void GuardAgainstNullTailFunc()
-		{
-			if (tail == null)
-				throw new InvalidOperationException("Finally function must be set");
 		}
 
 		private Func<Func<T, TOut>> GetNext { get; set; }

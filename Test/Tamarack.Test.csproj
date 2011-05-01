@@ -71,7 +71,9 @@
     <Compile Include="Pipeline\Extensions\AddFiltersInAssemblyTests.cs" />
     <Compile Include="Pipeline\Extensions\AppendCaretToOutput.cs" />
     <Compile Include="Pipeline\Extensions\AppendAsteriskToOutput.cs" />
+    <Compile Include="Pipeline\FinallyTests.cs" />
     <Compile Include="Pipeline\PipelineTests.cs" />
+    <Compile Include="Pipeline\ShortCircuit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnityServiceProvider.cs" />
   </ItemGroup>

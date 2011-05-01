@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using Tamarack.Pipeline;
 
@@ -8,25 +7,6 @@ namespace Tamarack.Test.Pipeline
 	[TestFixture]
 	public class PipelineTests
 	{
-		[Test]
-		public void Should_execute_final_function()
-		{
-			var pipeline = new Pipeline<int, string>();
-			pipeline.Finally(x => x + "!");
-
-			var output = pipeline.Execute(2);
-
-			Assert.That(output, Is.EqualTo("2!"));
-		}
-
-		[Test]
-		public void Should_throw_exception_when_final_function_is_not_set()
-		{
-			var pipeline = new Pipeline<int, string>();
-
-			Assert.Throws<InvalidOperationException>(() => pipeline.Execute(2));
-		}
-
 		[Test]
 		public void Filter_can_modify_input()
 		{

@@ -39,7 +39,7 @@ namespace Tamarack.Test.Pipeline.Extensions
 			var pipeline = new Pipeline<int, string>(serviceProvider)
 				.AddFiltersIn(typeof(AddFiltersInAssemblyTests).Assembly);
 
-			Assert.That(pipeline.Count, Is.EqualTo(4));
+			Assert.That(pipeline.Count, Is.EqualTo(5));
 		}
 	}
 }
