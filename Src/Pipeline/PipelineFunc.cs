@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Tamarack.Pipeline
 {
-	public class Pipeline<T>
+	public class Pipeline<T, TOut>
 	{
 		private readonly IServiceProvider serviceProvider;
-		private readonly IList<IFilter<T>> filters;
+		private readonly IList<IFilter<T, TOut>> filters;
 		private int current;
 
 		public Pipeline()
@@ -16,7 +16,7 @@ namespace Tamarack.Pipeline
 		public Pipeline(IServiceProvider serviceProvider)
 		{
 			this.serviceProvider = serviceProvider;
-			filters = new List<IFilter<T>>();
+			filters = new List<IFilter<T, TOut>>();
 		}
 
 		public int Count
@@ -24,33 +24,33 @@ namespace Tamarack.Pipeline
 			get { return filters.Count; }
 		}
 
-		public Pipeline<T> Add(IFilter<T> filter)
+		public Pipeline<T, TOut> Add(IFilter<T, TOut> filter)
 		{
 			filters.Add(filter);
 			return this;
 		}
 
-		public Pipeline<T> Add(Type filterType)
+		public Pipeline<T, TOut> Add(Type filterType)
 		{
-			Add((IFilter<T>)serviceProvider.GetService(filterType));
+			Add((IFilter<T, TOut>)serviceProvider.GetService(filterType));
 			return this;
 		}
 
-		public Pipeline<T> Add<TFilter>() where TFilter : IFilter<T>
+		public Pipeline<T, TOut> Add<TFilter>() where TFilter : IFilter<T, TOut>
 		{
 			Add(typeof(TFilter));
 			return this;
 		}
 
-		public void Execute(T input)
+		public TOut Execute(T input)
 		{
 			GetNext = () => current < filters.Count
 				? x => filters[current++].Execute(x, GetNext())
-				: new Action<T>(c => { throw new EndOfChainException(); });
+				: new Func<T, TOut>(c => { throw new EndOfChainException(); });
 
-			GetNext().Invoke(input);
+			return GetNext().Invoke(input);
 		}
 
-		private Func<Action<T>> GetNext { get; set; }
+		private Func<Func<T, TOut>> GetNext { get; set; }
 	}
 }
