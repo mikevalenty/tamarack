@@ -46,7 +46,7 @@ namespace Tamarack.Pipeline
 		{
 			GetNext = () => current < filters.Count
 				? x => filters[current++].Execute(x, GetNext())
-				: new Action<T>(c => { throw new EndOfChainException(); });
+				: new Action<T>(c => { });
 
 			GetNext().Invoke(input);
 		}

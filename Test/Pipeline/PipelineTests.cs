@@ -1,4 +1,4 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
 using NUnit.Framework;
 using Tamarack.Pipeline;
 
@@ -8,66 +8,49 @@ namespace Tamarack.Test.Pipeline
 	public class PipelineTests
 	{
 		[Test]
-		public void Filter_can_modify_input()
+		public void Should_not_require_any_filters()
 		{
-			var pipeline = new Pipeline<int, string>();
-			pipeline.Add(new AddToInput(3));
-			pipeline.Finally(x => x + "!");
+			var context = new MyContext { Value = "hi" };
 
-			var output = pipeline.Execute(2);
+			var pipeline = new Pipeline<MyContext>();
+			pipeline.Execute(context);
 
-			Assert.That(output, Is.EqualTo("5!"));
-		}
-
-		[Test]
-		public void Filter_can_modify_output()
-		{
-			var pipeline = new Pipeline<int, string>();
-			pipeline.Add(new AppendToOutput("#"));
-			pipeline.Finally(x => x + "!");
-
-			var output = pipeline.Execute(2);
-
-			Assert.That(output, Is.EqualTo("2!#"));
+			Assert.That(context.Value, Is.EqualTo("hi"));
 		}
 
 		[Test]
 		public void Should_apply_each_filter_in_order_added()
 		{
-			var pipeline = new Pipeline<int, string>();
-			pipeline.Add(new AddToInput(2));
-			pipeline.Add(new AppendToOutput("@"));
-			pipeline.Finally(x => x + "!");
+			var context = new MyContext { Value = "one" };
 
-			var output = pipeline.Execute(2);
+			var pipeline = new Pipeline<MyContext>();
+			pipeline.Add(new AppendToValue(", two"));
+			pipeline.Add(new AppendToValue(", three"));
+			pipeline.Execute(context);
 
-			Assert.That(output, Is.EqualTo("4!@"));
+			Assert.That(context.Value, Is.EqualTo("one, two, three"));
 		}
 
-		[Test]
-		public void Should_have_fluent_interface()
+		class MyContext
 		{
-			var output = new Pipeline<int, string>()
-				.Add(new AddToInput(3))
-				.Add(new AppendToOutput("#"))
-				.Finally(x => x + "!")
-				.Execute(2);
-
-			Assert.That(output, Is.EqualTo("5!#"));
+			public string Value { get; set; }
 		}
 
-		[Test]
-		public void Should_build_filters_with_service_provider()
+		class AppendToValue : IFilter<MyContext>
 		{
-			var container = new UnityContainer()
-				.RegisterType<AppendToOutput>(new InjectionConstructor("*"));
+			private readonly string text;
 
-			var output = new Pipeline<int, string>(new UnityServiceProvider(container))
-				.Add<AppendToOutput>()
-				.Finally(x => x + "!")
-				.Execute(2);
+			public AppendToValue(string text)
+			{
+				this.text = text;
+			}
 
-			Assert.That(output, Is.EqualTo("2!*"));
+			public void Execute(MyContext context, Action<MyContext> executeNext)
+			{
+				context.Value += text;
+
+				executeNext(context);
+			}
 		}
 	}
 }
