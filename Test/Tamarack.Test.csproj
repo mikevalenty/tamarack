@@ -58,6 +58,7 @@
       <HintPath>..\packages\NUnit.2.5.9.10348\lib\pnunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -66,11 +67,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\TypeConfigurationLinqExtensions.cs" />
+    <Compile Include="Pipeline\Extensions\AddFiltersInAppConfigTests.cs" />
     <Compile Include="Pipeline\AddToInput.cs" />
     <Compile Include="Pipeline\AppendToOutput.cs" />
     <Compile Include="Pipeline\Extensions\AddFiltersInAssemblyTests.cs" />
     <Compile Include="Pipeline\Extensions\AppendCaretToOutput.cs" />
     <Compile Include="Pipeline\Extensions\AppendAsteriskToOutput.cs" />
+    <Compile Include="Configuration\TypeConfigurationSectionTests.cs" />
     <Compile Include="Pipeline\FinallyTests.cs" />
     <Compile Include="Pipeline\PipelineFuncTests.cs" />
     <Compile Include="Pipeline\PipelineTests.cs" />
@@ -85,6 +89,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
