@@ -67,7 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\TypeConfigurationLinqExtensions.cs" />
     <Compile Include="Pipeline\Extensions\AddFiltersInAppConfigTests.cs" />
     <Compile Include="Pipeline\AddToInput.cs" />
     <Compile Include="Pipeline\AppendToOutput.cs" />

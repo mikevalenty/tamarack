@@ -75,8 +75,10 @@ Prefer convention over configuration? Try this instead:
 
 	public double CalculateSpamScore(string text)
 	{
-		var pipeline = new Pipeline<string, double>()
-			.AddFiltersIn("Tamarack.Example.Pipeline.SpamScorer.Filters")
+		var pipeline = new Pipeline<string, double>(serviceProvider)
+			.AddAssembly()
+			.AddNamespace("Tamarack.Example.Pipeline.SpamScorer.Filters")
+			.AddConfigurationSection("spamScoreFilters")
 			.Finally(score => 0);
 
 		return pipeline.Execute(text);

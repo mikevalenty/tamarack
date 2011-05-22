@@ -11,7 +11,7 @@ namespace Tamarack.Test.Pipeline.Extensions
 		[Test]
 		public void Should_add_types_to_pipeline()
 		{
-			var pipeline = new Pipeline<int, string>().AddSection("filters");
+			var pipeline = new Pipeline<int, string>().AddConfigurationSection("filters");
 
 			Assert.That(pipeline.Count, Is.EqualTo(2));
 		}
@@ -21,7 +21,7 @@ namespace Tamarack.Test.Pipeline.Extensions
 		{
 			var pipeline = new Pipeline<int, string>();
 
-			Assert.Throws<ArgumentException>(() => pipeline.AddSection("bogus"));
+			Assert.Throws<ArgumentException>(() => pipeline.AddConfigurationSection("bogus"));
 		}
 	}
 }

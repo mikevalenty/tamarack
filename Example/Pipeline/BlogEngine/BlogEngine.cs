@@ -6,12 +6,10 @@ namespace Tamarack.Example.Pipeline.BlogEngine
 {
 	public class BlogEngine
 	{
-		private readonly IServiceProvider serviceProvider;
 		private readonly IBlogRepository repository;
 
-		public BlogEngine(IServiceProvider serviceProvider, IBlogRepository repository)
+		public BlogEngine(IBlogRepository repository)
 		{
-			this.serviceProvider = serviceProvider;
 			this.repository = repository;
 		}
 

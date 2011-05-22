@@ -6,25 +6,27 @@ namespace Tamarack.Pipeline.Extensions
 {
 	public static class AssemblyPipelineExtensions
 	{
-		public static Pipeline<T, TOut> AddFiltersIn<T, TOut>(this Pipeline<T, TOut> pipeline, Assembly assembly)
+		public static Pipeline<T, TOut> AddAssembly<T, TOut>(this Pipeline<T, TOut> pipeline)
 		{
-			return AddFiltersIn(pipeline, Assembly.GetCallingAssembly(), t => true);
+			return AddAssembly(pipeline, Assembly.GetCallingAssembly(), t => true);
 		}
 
-		public static Pipeline<T, TOut> AddFiltersIn<T, TOut>(this Pipeline<T, TOut> pipeline, string filterNamespace)
+		public static Pipeline<T, TOut> AddAssembly<T, TOut>(this Pipeline<T, TOut> pipeline, Func<Type, bool> predicate)
 		{
-			return AddFiltersIn(pipeline, Assembly.GetCallingAssembly(), filterNamespace);
+			return AddAssembly(pipeline, Assembly.GetCallingAssembly(), predicate);
 		}
 
-		public static Pipeline<T, TOut> AddFiltersIn<T, TOut>(
-			this Pipeline<T, TOut> pipeline,
-			Assembly assembly,
-			string filterNamespace)
+		public static Pipeline<T, TOut> AddAssembly<T, TOut>(this Pipeline<T, TOut> pipeline, Assembly assembly)
 		{
-			return AddFiltersIn(pipeline, assembly, t => t.Namespace == filterNamespace);
+			return AddAssembly(pipeline, assembly, t => true);
 		}
 
-		public static Pipeline<T, TOut> AddFiltersIn<T, TOut>(
+		public static void AddAssemblyOf<T, TOut, TOf>(this Pipeline<T, TOut> pipeline)
+		{
+			AddAssembly(pipeline, typeof(TOf).Assembly, t => true);
+		}
+
+		public static Pipeline<T, TOut> AddAssembly<T, TOut>(
 			this Pipeline<T, TOut> pipeline,
 			Assembly assembly,
 			Func<Type, bool> predicate)
@@ -39,6 +41,19 @@ namespace Tamarack.Pipeline.Extensions
 			}
 
 			return pipeline;
+		}
+
+		public static Pipeline<T, TOut> AddNamespace<T, TOut>(this Pipeline<T, TOut> pipeline, string filterNamespace)
+		{
+			return AddAssembly(pipeline, Assembly.GetCallingAssembly(), t => t.Namespace == filterNamespace);
+		}
+
+		public static Pipeline<T, TOut> AddNamespace<T, TOut>(
+			this Pipeline<T, TOut> pipeline,
+			Assembly assembly,
+			string filterNamespace)
+		{
+			return AddAssembly(pipeline, assembly, t => t.Namespace == filterNamespace);
 		}
 	}
 }

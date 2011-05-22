@@ -21,8 +21,9 @@ namespace Tamarack.Example.Pipeline.SpamScorer
 		public double CalculateSpamScore2(string text)
 		{
 			var pipeline = new Pipeline<string, double>()
-				.AddFiltersIn("Tamarack.Example.Pipeline.SpamScorer.Filters")
-				.Finally(score => 0);
+				.AddAssembly()
+				.AddNamespace("Tamarack.Example.Pipeline.SpamScorer.Filters")
+				.AddConfigurationSection("spamScoreFilters");
 
 			return pipeline.Execute(text);
 		}

@@ -25,7 +25,7 @@ namespace Tamarack.Test.Pipeline.Extensions
 		public void Should_load_filters_in_namespace_in_alphabetical_order()
 		{
 			var pipeline = new Pipeline<int, string>()
-				.AddFiltersIn("Tamarack.Test.Pipeline.Extensions")
+				.AddNamespace("Tamarack.Test.Pipeline.Extensions")
 				.Finally(x => x.ToString());
 
 			var output = pipeline.Execute(2);
@@ -37,7 +37,7 @@ namespace Tamarack.Test.Pipeline.Extensions
 		public void Should_load_all_filters_in_assembly()
 		{
 			var pipeline = new Pipeline<int, string>(serviceProvider)
-				.AddFiltersIn(typeof(AddFiltersInAssemblyTests).Assembly);
+				.AddAssembly(typeof(AddFiltersInAssemblyTests).Assembly);
 
 			Assert.That(pipeline.Count, Is.EqualTo(5));
 		}
