@@ -75,6 +75,7 @@
     <Compile Include="Pipeline\Extensions\AppendAsteriskToOutput.cs" />
     <Compile Include="Configuration\TypeConfigurationSectionTests.cs" />
     <Compile Include="Pipeline\FinallyTests.cs" />
+    <Compile Include="Pipeline\InceptionTests.cs" />
     <Compile Include="Pipeline\PipelineFuncTests.cs" />
     <Compile Include="Pipeline\PipelineTests.cs" />
     <Compile Include="Pipeline\ShortCircuit.cs" />

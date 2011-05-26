@@ -31,26 +31,27 @@ namespace Tamarack.Test.Pipeline
 			Assert.That(context.Value, Is.EqualTo("one, two, three"));
 		}
 
-		class MyContext
+	}
+
+	public class MyContext
+	{
+		public string Value { get; set; }
+	}
+
+	public class AppendToValue : IFilter<MyContext>
+	{
+		private readonly string text;
+
+		public AppendToValue(string text)
 		{
-			public string Value { get; set; }
+			this.text = text;
 		}
 
-		class AppendToValue : IFilter<MyContext>
+		public void Execute(MyContext context, Action<MyContext> executeNext)
 		{
-			private readonly string text;
+			context.Value += text;
 
-			public AppendToValue(string text)
-			{
-				this.text = text;
-			}
-
-			public void Execute(MyContext context, Action<MyContext> executeNext)
-			{
-				context.Value += text;
-
-				executeNext(context);
-			}
+			executeNext(context);
 		}
 	}
 }

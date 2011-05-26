@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tamarack.Pipeline
 {
-	public class Pipeline<T>
+	public class Pipeline<T> : IFilter<T>
 	{
 		private readonly IServiceProvider serviceProvider;
 		private readonly IList<IFilter<T>> filters;
@@ -44,9 +44,14 @@ namespace Tamarack.Pipeline
 
 		public void Execute(T input)
 		{
+			((IFilter<T>)this).Execute(input, x => { });
+		}
+
+		void IFilter<T>.Execute(T input, Action<T> executeNext)
+		{
 			GetNext = () => current < filters.Count
 				? x => filters[current++].Execute(x, GetNext())
-				: new Action<T>(c => { });
+				: executeNext;
 
 			GetNext().Invoke(input);
 		}
