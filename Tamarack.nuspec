@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Tamarack</id>
+    <version>$version$</version>
+    <authors>Michael Valenty</authors>
+    <owners>Michael Valenty</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>https://github.com/mikevalenty/tamarack</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A micro framework for implementing the Chain of Responsibility pattern in .NET. An essential tool in OO toolbox for transforming rigid procedural code into a composable Domain Specific Language.</description>
+    <tags>pipeline filter chain-of-responsibility pattern framework</tags>
+  </metadata>
+  <files>
+    <file src="Release\3.5\*.dll" target="lib\net35" /> 
+    <file src="Release\4.0\*.dll" target="lib\net40" /> 
+</files>
+</package>
