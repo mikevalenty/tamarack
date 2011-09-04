@@ -1,10 +1,11 @@
 properties {
     $project_name     = "Tamarack"
-    $base_directory   = resolve-path ".\"
+    $base_directory   = resolve-path "..\."
     $build_directory  = "$base_directory\Release"
-    $tools_directory  = "$base_directory\Tools"
-    $solution_path    = "$project_name.sln"
-    $nuspec_path      = "$project_name.nuspec"
+    $nunit_path       = "$base_directory\packages\NUnit.2.5.9.10348\Tools\nunit-console.exe"
+    $nuget_path       = "$base_directory\packages\NuGet.CommandLine.1.4.20615.182\tools\"
+    $solution_path    = "$base_directory\$project_name.sln"
+    $nuspec_path      = "$base_directory\$project_name.nuspec"
     $release_files    =  @("$project_name.dll");#@("Tamarack.dll", "Tamarack.xml" );
     $version          = "1.0.0.0"
 }
@@ -17,12 +18,14 @@ task Publish -depends package {
 task Package -depends Default{
     
     # Create the nuget package
-    Exec { & $tools_directory\nuget\nuget.exe pack $nuspec_path -Version "$version" -OutputDirectory "$build_directory" }
+    Exec { & $nuget_path\nuget.exe pack $nuspec_path -Version "$version" -OutputDirectory "$build_directory" }
 }
 
 task default -depends Build
 
 task Clean -description "This task cleans up the build directory" {
+    
+    Write-Host "$solution_path "
     
     # Delete the build directory for a clean start    
     Remove-Item $build_directory -Force -Recurse -ErrorAction SilentlyContinue
