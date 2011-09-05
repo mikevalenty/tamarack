@@ -1,0 +1,1 @@
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {Import-Module .\packages\psake.4.0.1.0\tools\psake.psm1; Invoke-psake .\Build\default.ps1 %*}"
