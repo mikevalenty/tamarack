@@ -23,7 +23,7 @@ task Package -depends Default{
     Write-Host "Current is $version"
     
     # Create the nuget package
-    Exec { & $nuget_path\nuget.exe pack $nuspec_path -Version "$version" -OutputDirectory "$build_directory" }
+    Exec { & $nuget_path\nuget.exe pack $nuspec_path -Version "$version" -OutputDirectory "$build_directory" -Symbols }
 }
 
 task default -depends Build
