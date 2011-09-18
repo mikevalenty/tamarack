@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Tamarack")]
-[assembly: AssemblyDescription("A micro framework for implementing the Chain of Responsibility pattern in .NET. An essential tool in OO toolbox for transforming rigid procedural code into a composable Domain Specific Language.")]
+[assembly: AssemblyDescription("A micro framework for implementing the Chain of Responsibility pattern in .NET. An essential tool in the OO toolbox for transforming rigid procedural code into a composable Domain Specific Language.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Michael Valenty")]
 [assembly: AssemblyProduct("Tamarack")]
