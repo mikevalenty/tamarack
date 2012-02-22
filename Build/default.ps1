@@ -6,7 +6,7 @@ properties {
     $nuget_path       = "$base_directory\packages\NuGet.CommandLine.1.4.20615.182\tools\"
     $solution_path    = "$base_directory\$project_name.sln"
     $nuspec_path      = "$base_directory\$project_name.nuspec"
-    $release_files    =  @("$project_name.dll");#@("Tamarack.dll", "Tamarack.xml" );  
+    $release_files    =  @("$project_name.dll", "Tamarack.pdb");  
 }
 
 task Publish -depends package {
