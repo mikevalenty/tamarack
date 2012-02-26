@@ -13,6 +13,8 @@
   </metadata>
   <files>
     <file src="Release\3.5\*.dll" target="lib\net35" /> 
+    <file src="Release\3.5\*.pdb" target="lib\net35" /> 
     <file src="Release\4.0\*.dll" target="lib\net40" /> 
+    <file src="Release\4.0\*.pdb" target="lib\net40" /> 
 </files>
 </package>
