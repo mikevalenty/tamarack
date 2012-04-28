@@ -13,76 +13,84 @@ Show me examples!
 -----------
 Consider a block of code to process a blog comment coming from a web-based rich text editor. There are
 probably several things you'll want to do before letting the text into your database. 
-    
-	public class BlogEngine
+
+```c#
+public class BlogEngine
+{
+	...
+
+	public int Submit(Post post)
 	{
-		...
+		var pipeline = new Pipeline<Post, int>()
+			.Add(new CanoncalizeHtml())
+			.Add(new StripMaliciousTags())
+			.Add(new RemoveJavascript())
+			.Add(new RewriteProfanity())
+			.Add(new GuardAgainstDoublePost())
+			.Finally(p => repository.Save(p));
 
-		public int Submit(Post post)
-		{
-			var pipeline = new Pipeline<Post, int>(serviceProvider)
-				.Add<CanoncalizeHtml>()
-				.Add<StripMaliciousTags>()
-				.Add<RemoveJavascript>()
-				.Add<RewriteProfanity>()
-				.Add<GuardAgainstDoublePost>()
-				.Finally(p => repository.Save(p));
+		var newId = pipeline.Execute(post);
 
-			var newId = pipeline.Execute(post);
-
-			return newId;
-		}
+		return newId;
 	}
+}
+```
 
 How about user login? There are all kinds of things you might need to do there:
 
-	public class LoginService
-	{
-		...
-	
-		public bool Login(string username, string password)
-		{
-			var pipeline = new Pipeline<LoginContext, bool>(serviceProvider)
-				.Add<WriteLoginAttemptToAuditLog>()
-				.Add<LockoutOnConsecutiveFailures>()
-				.Add<AuthenticateAgainstLocalStore>()
-				.Add<AuthenticateAgainstLdap>()
-				.Finally(c => false);
+```c#
+public class LoginService
+{
+	...
 
-			return pipeline.Execute(new LoginContext(username, password));
-		}
+	public bool Login(string username, string password)
+	{
+		var pipeline = new Pipeline<LoginContext, bool>(serviceProvider)
+			.Add<WriteLoginAttemptToAuditLog>()
+			.Add<LockoutOnConsecutiveFailures>()
+			.Add<AuthenticateAgainstLocalStore>()
+			.Add<AuthenticateAgainstLdap>()
+			.Finally(c => false);
+
+		return pipeline.Execute(new LoginContext(username, password));
 	}
+}
+```
 
 Calculating a spam score in a random block of text:
 
-	public class SpamScorer
-	{
-		...
-		
-		public double CalculateSpamScore(string text)
-		{
-			var pipeline = new Pipeline<string, double>(serviceProvider)
-				.Add<SpamCopBlacklistFilter>()
-				.Add<PerspcriptionDrugFilter>()
-				.Add<PornographyFilter>()
-				.Finally(score => 0);
-
-			return pipeline.Execute(text);
-		}
-	}
+```c#
+public class SpamScorer
+{
+	...
 	
-Prefer convention over configuration? Try this instead:
-
 	public double CalculateSpamScore(string text)
 	{
 		var pipeline = new Pipeline<string, double>(serviceProvider)
-			.AddAssembly()
-			.AddNamespace("Tamarack.Example.Pipeline.SpamScorer.Filters")
-			.AddConfigurationSection("spamScoreFilters")
+			.Add<SpamCopBlacklistFilter>()
+			.Add<PerspcriptionDrugFilter>()
+			.Add<PornographyFilter>()
 			.Finally(score => 0);
 
 		return pipeline.Execute(text);
 	}
+}
+```
+	
+Prefer convention over configuration? Try this instead:
+
+```c#
+public double CalculateSpamScore(string text)
+{
+	var pipeline = new Pipeline<string, double>(serviceProvider)
+		.AddAssembly()
+		.AddNamespace("Tamarack.Example.Pipeline.SpamScorer.Filters")
+		.AddConfigurationSection("spamScoreFilters")
+		.Finally(score => 0);
+
+	return pipeline.Execute(text);
+}
+```
 
 How does it work?
 -----------
@@ -105,34 +113,38 @@ I learn by example, so let's look at this interface in action. In the spam score
 example, each filter looks for markers in the text and adds to the overall spam score by
 modifying the _result_ of the next filter before returning.
 
-	public class PerspcriptionDrugFilter : IFilter<string, double>
+```c#
+public class PerspcriptionDrugFilter : IFilter<string, double>
+{
+	public double Execute(string text, Func<string, double> executeNext)
 	{
-		public double Execute(string text, Func<string, double> executeNext)
-		{
-			var score = executeNext(text);
+		var score = executeNext(text);
 
-			if (text.Contains("viagra"))
-				score += .25;
+		if (text.Contains("viagra"))
+			score += .25;
 
-			return score;
-		}
+		return score;
 	}
-	
+}
+```
+
 In this login example, we're look for the user in our local user store and if it exists 
 we'll short-circuit the chain and authenticate the request. Otherwise we'll let the request 
 continue to the next filter which looks for the user in an Ldap respository.
 
-	public class AuthenticateAgainstLocalStore : IFilter<LoginContext, bool>
+```c#
+public class AuthenticateAgainstLocalStore : IFilter<LoginContext, bool>
+{
+	...
+	
+	public bool Execute(LoginContext context, Func<LoginContext, bool> executeNext)
 	{
-		...
-		
-		public bool Execute(LoginContext context, Func<LoginContext, bool> executeNext)
-		{
-			var user = repository.FindByUsername(context.Username);
+		var user = repository.FindByUsername(context.Username);
 
-			if (user != null)
-				return user.IsValid(context.Password); // short circuit
-			
-			return executeNext(context);
-		}
+		if (user != null)
+			return user.IsValid(context.Password); // short circuit
+		
+		return executeNext(context);
 	}
+}
+```
