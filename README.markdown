@@ -22,7 +22,7 @@ public class BlogEngine
 	public int Submit(Post post)
 	{
 		var pipeline = new Pipeline<Post, int>()
-			.Add(new CanoncalizeHtml())
+			.Add(new CanonicalizeHtml())
 			.Add(new StripMaliciousTags())
 			.Add(new RemoveJavascript())
 			.Add(new RewriteProfanity())
@@ -68,7 +68,7 @@ public class SpamScorer
 	{
 		var pipeline = new Pipeline<string, double>(serviceProvider)
 			.Add<SpamCopBlacklistFilter>()
-			.Add<PerspcriptionDrugFilter>()
+			.Add<PrescriptionDrugFilter>()
 			.Add<PornographyFilter>()
 			.Finally(score => 0);
 
@@ -114,7 +114,7 @@ example, each filter looks for markers in the text and adds to the overall spam 
 modifying the _result_ of the next filter before returning.
 
 ```c#
-public class PerspcriptionDrugFilter : IFilter<string, double>
+public class PrescriptionDrugFilter : IFilter<string, double>
 {
 	public double Execute(string text, Func<string, double> executeNext)
 	{
